@@ -10,26 +10,11 @@
 
 #include "Response.pb.h"
 #include "CommonTypes.h"
+#include "CommonUtils.h"
 #include "Request.h"
 
 using namespace std;
 using namespace MicroWireless::OneM2M;
-/*
-template <typename funcT>
-bool setString(string & s, funcT setter) {
-	string * _p = new string(s);
-	if (_p == NULL) {
-		cerr << "Can't allocate. new(" << s << ") failed." << endl;
-		return false;
-	} else {
-		setter(_p);
-	}
-}
-*/
-enum ValidateType {
-	VALIDATE_COMMON,
-	VALIDATE_ALL
-};
 
 class Response
 {
@@ -62,9 +47,6 @@ public:
 	string getJson();
 
 	~Response();
-
-protected:
-	bool setString(string &, void (pb::Response::*setter)(string *));
 
 private:
 	Request * p_request_;		// matching request.

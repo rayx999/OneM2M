@@ -11,6 +11,7 @@
 #include <json2pb.h>
 
 #include "Request.pb.h"
+#include "CommonUtils.h"
 #include "Request.h"
 
 using namespace std;
@@ -31,9 +32,25 @@ Request::Request(Operation op, string & to, string & fr, string & rqi) {
 	}
 	// Mandatory fields
 	request_pb_.set_op(static_cast<pb::CommonTypes_Operation>(op));
-	request_pb_.set_allocated_to(new string(to));
-	request_pb_.set_allocated_fr(new string(fr));
-	request_pb_.set_allocated_rqi(new string(rqi));
+	setString(to, &pb::Request::set_allocated_to, request_pb_);
+	setString(fr, &pb::Request::set_allocated_fr, request_pb_);
+	setString(rqi, &pb::Request::set_allocated_rqi, request_pb_);
+
+	if (!isValid()) {
+		throw runtime_error("Request constructor failed!");
+	}
+}
+
+const string & Request::getTo() {
+	return request_pb_.to();
+}
+
+const string & Request::getFrom() {
+	return request_pb_.fr();
+}
+
+const string & Request::getRequestId() {
+	return request_pb_.rqi();
 }
 
 Operation Request::getOperation() {
@@ -94,12 +111,16 @@ DiscoveryResultType getDiscoveryResultType();
 
 #endif
 
-bool Request::isValid() {
+bool Request::isValid(ValidateType vt) {
 	if (request_pb_.to().empty() ||
 		request_pb_.fr().empty() ||
 		request_pb_.rqi().empty() ) {
 		cerr << "Request miss to, from or request id." << endl;
 		return false;
+	}
+
+	if (vt == VALIDATE_COMMON) {
+		return true;
 	}
 
 	switch (static_cast<Operation>(request_pb_.op())) {

@@ -10,6 +10,7 @@
 
 #include "Request.pb.h"
 #include "CommonTypes.h"
+#include "CommonUtils.h"
 
 using namespace std;
 using namespace MicroWireless::OneM2M;
@@ -24,6 +25,10 @@ public:
 
 	bool setResourceType(ResourceType ty);
 	ResourceType getResourceType();
+
+	const string & getTo();
+	const string & getFrom();
+	const string & getRequestId();
 
 	bool setName(string &nm);
 	bool getName(string &nm);
@@ -67,7 +72,7 @@ public:
 	bool setDiscoveryResultType(DiscoveryResultType drt);
 	DiscoveryResultType getDiscoveryResultType();
 
-	bool isValid();
+	bool isValid(ValidateType vt = VALIDATE_COMMON);
 	string getJson();
 
 private:

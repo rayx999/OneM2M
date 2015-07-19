@@ -16,50 +16,71 @@ using namespace MicroWireless::OneM2M;
 
 class RequestTest : public ::testing::Test {
 	protected:
-	Request * request_;
+	string request_json;
+	Operation op_;
+	string to_;
+	string fr_;
+	string rqi_;
+	Request * p_request_;
 
 	RequestTest() {
-		string json("{\"op\": 2, \"to\": \"//microwireless.com/IN-CSE-01\", \"rqi\": \"ab3f124a\", \"fr\": \"//microwireless.com/AE-01\"}");
-		request_ = new Request(json);
+		request_json = string("{\"op\": 2, \"to\": \"//microwireless.com/IN-CSE-01\", \"rqi\": \"ab3f124a\", \"fr\": \"//microwireless.com/AE-01\"}");
+		op_ = OPERATION_RETRIEVE;
+		to_ = string("//microwireless.com/IN-CSE-01");
+		fr_ = string("//microwireless.com/AE-01");
+		rqi_ = string("ab3f124a");
+		p_request_ = NULL;
 	}
 
 	virtual void SetUp() {
+		p_request_ = new Request(request_json);
 	}
 
 	Operation getOperation() {
-		return request_->getOperation();
+		return p_request_->getOperation();
+	}
+
+	const string & getTo() {
+		return p_request_->getTo();
+	}
+
+	const string & getFrom() {
+		return p_request_->getFrom();
+	}
+
+	const string & getRequestId() {
+		return p_request_->getRequestId();
 	}
 
 	bool setResourceType(ResourceType ty) {
-		return request_->setResourceType(ty);
+		return p_request_->setResourceType(ty);
 	}
 
 	ResourceType getResourceType() {
-		return request_->getResourceType();
+		return p_request_->getResourceType();
+	}
+
+	virtual void TearDown() {
+		if (p_request_ == NULL) {
+			delete p_request_;
+			p_request_ = NULL;
+		}
 	}
 };
 
 TEST_F(RequestTest, FullCtor) {
-	Operation op = OPERATION_RETRIEVE;
-	string to("//microwireless.com/IN-CSE-01");
-	string fr("//microwireless.com/AE-01");
-	string rqi("ab3f124a");
-
 	try {
-		Request request_(op, to, fr, rqi);
+		Request request_(op_, to_, fr_, rqi_);
 	} catch (const exception &e) {
 		ASSERT_TRUE(false);
 	}
 }
 
 TEST_F(RequestTest, CtorNoTo) {
-	Operation op = OPERATION_RETRIEVE;
-	string to;
-	string fr("//microwireless.com/AE-01");
-	string rqi("ab3f124a");
+	string to_none;
 
 	try {
-		Request request_(op, to, fr, rqi);
+		Request request_(op_, to_none, fr_, rqi_);
 	} catch (const exception &e) {
 		cout << "Expected exception:" << e.what() << endl;
 		return;
@@ -68,13 +89,10 @@ TEST_F(RequestTest, CtorNoTo) {
 }
 
 TEST_F(RequestTest, CtorNoFr) {
-	Operation op = OPERATION_RETRIEVE;
-	string to("//microwireless.com/IN-CSE-01");
-	string fr("//microwireless.com/AE-01");
-	string rqi;
+	string rqi_none;
 
 	try {
-		Request request_(op, to, fr, rqi);
+		Request request_(op_, to_, fr_, rqi_none);
 	} catch (const exception &e) {
 		cout << "Expecetd exception:" << e.what() << endl;
 		return;
@@ -83,13 +101,10 @@ TEST_F(RequestTest, CtorNoFr) {
 }
 
 TEST_F(RequestTest, CtorNoRqi) {
-	Operation op = OPERATION_RETRIEVE;
-	string to("//microwireless.com/IN-CSE-01");
-	string fr;
-	string rqi("ab3f124a");
+	string fr_none;
 
 	try {
-		Request request_(op, to, fr, rqi);
+		Request request_(op_, to_, fr_none, rqi_);
 	} catch (const exception &e) {
 		cout << "Expected exception:" << e.what() << endl;
 		return;
@@ -98,10 +113,8 @@ TEST_F(RequestTest, CtorNoRqi) {
 }
 
 TEST_F(RequestTest, JsonNormal) {
-	string json("{\"op\": 2, \"to\": \"//microwireless.com/IN-CSE-01\", \"rqi\": \"ab3f124a\", \"fr\": \"//microwireless.com/AE-01\"}");
-
 	try {
-		Request request_(json);
+		Request request_(request_json);
 	} catch (const exception &e) {
 		cout << "exception:" << e.what() << endl;
 		ASSERT_TRUE(false);
@@ -162,10 +175,11 @@ TEST_F(RequestTest, RetrieveWithResourceType) {
 	try {
 		pReq_ = new Request(json);
 	} catch (const exception &e) {
-		cout << "Expected exception:" << e.what() << endl;
+		cout << "Exception:" << e.what() << endl;
+		ASSERT_TRUE(false);
 		return;
 	}
-	ASSERT_FALSE(pReq_->isValid());
+	ASSERT_FALSE(pReq_->isValid(VALIDATE_ALL));
 }
 
 TEST_F(RequestTest, RetrieveWithName) {
@@ -174,10 +188,11 @@ TEST_F(RequestTest, RetrieveWithName) {
 	try {
 		pReq_ = new Request(json);
 	} catch (const exception &e) {
-		cout << "Expected exception:" << e.what() << endl;
+		cout << "Exception:" << e.what() << endl;
+		ASSERT_TRUE(false);
 		return;
 	}
-	ASSERT_FALSE(pReq_->isValid());
+	ASSERT_FALSE(pReq_->isValid(VALIDATE_ALL));
 }
 
 TEST_F(RequestTest, SetGetResourceType) {
@@ -187,4 +202,7 @@ TEST_F(RequestTest, SetGetResourceType) {
 
 TEST_F(RequestTest, GetAttributes) {
 	ASSERT_EQ(getOperation(), OPERATION_RETRIEVE);
+	ASSERT_STREQ(getTo().c_str(), to_.c_str());
+	ASSERT_STREQ(getFrom().c_str(), fr_.c_str());
+	ASSERT_STREQ(getRequestId().c_str(), rqi_.c_str());
 }

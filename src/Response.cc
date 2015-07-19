@@ -10,7 +10,9 @@
 #include <sstream>
 #include <json2pb.h>
 
+#include "CommonUtils.h"
 #include "Response.pb.h"
+#include "Request.h"
 #include "Response.h"
 
 using namespace std;
@@ -43,7 +45,7 @@ Response::Response(Request *p_request, ResponseStatusCode rsc, string & rqi){
 	p_request_ = p_request;
 	// Mandatory fields
 	response_pb_.set_rsc(static_cast<pb::CommonTypes_ResponseStatusCode>(rsc));
-	if (!setString(rqi, &pb::Response::set_allocated_rqi)) {
+	if (!setString(rqi, &pb::Response::set_allocated_rqi, response_pb_)) {
 		throw runtime_error("Response(status_code, req_id) failed.");
 	}
 }
@@ -52,8 +54,12 @@ ResponseStatusCode Response::getResponseStatusCode() {
 	return static_cast<ResponseStatusCode>(response_pb_.rsc());
 }
 
+const string & Response::getRequestId() {
+	return response_pb_.rqi();
+}
+
 bool Response::setContent(string & pc) {
-	return setString(pc, &pb::Response::set_allocated_pc);
+	return setString(pc, &pb::Response::set_allocated_pc, response_pb_);
 }
 
 const string & Response::getContent() {
@@ -61,7 +67,7 @@ const string & Response::getContent() {
 }
 
 bool Response::setTo(string & to) {
-	return setString(to, &pb::Response::set_allocated_to);
+	return setString(to, &pb::Response::set_allocated_to, response_pb_);
 }
 
 const string & Response::getTo() {
@@ -69,7 +75,7 @@ const string & Response::getTo() {
 }
 
 bool Response::setFrom(string & fr) {
-	return setString(fr, &pb::Response::set_allocated_fr);
+	return setString(fr, &pb::Response::set_allocated_fr, response_pb_);
 }
 
 const string & Response::getFrom() {
@@ -128,17 +134,4 @@ Response::~Response() {
 		p_request_ = NULL;
 	} */
 }
-
-bool Response::setString(string & s, void (pb::Response::*setter)(string *)) {
-	string * _p = new string(s);
-
-	if (_p == NULL) {
-		cerr << "Can't allocate. new(" << s << ") failed." << endl;
-		return false;
-	} else {
-		(response_pb_.*setter)(_p);
-		return true;
-	}
-}
-
 
