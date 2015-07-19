@@ -1,2 +1,2 @@
-%//microwireless.com/IN-CSE-01/CSEBASECSEBASE*קר»¬2”­ ¬ֱױ ×
+%//microwireless.com/IN-CSE-01/CSEBASECSEBASE*קר»¬2²ן®­€Ê, ×
 /IN-CSE-01²

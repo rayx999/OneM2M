@@ -56,11 +56,11 @@ class CSEBaseTest : public ::testing::Test {
 		return cse_base.getCreateTimestamp(ct);
 	}
 
-	bool isResourceSupported(ResourceType rt) {
+	bool isResourceSupported(SupportedResourceType rt) {
 		return cse_base.isResourceSupported(rt);
 	}
 
-	int getSupportedResource(ResourceType *&rt) {
+	int getSupportedResource(SupportedResourceType *&rt) {
 		return cse_base.getSupportedResource(rt);
 	}
 	// virtual void TearDown() {}
@@ -172,9 +172,9 @@ TEST_F(CSEBaseTest, CheckSupportedResourceType) {
 }
 
 TEST_F(CSEBaseTest, GetSupportedResource) {
-	ResourceType *_rt;
+	SupportedResourceType *_rt;
 	int size = getSupportedResource(_rt);
 	ASSERT_EQ(size, 3);
-	ResourceType _srt[] = {AE,CSE_BASE,REMOTE_CSE};
+	SupportedResourceType _srt[] = {AE,CSE_BASE,REMOTE_CSE};
 	UTest::ASSERT_ARREQ(_rt, _srt, 3);
 }

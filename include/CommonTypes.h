@@ -12,6 +12,14 @@
 #include <sys/time.h>
 
 typedef struct timeval	TimeStamp;
+typedef struct timeval	Duration;
+
+enum ResourceType
+{
+  NORMAL = 1,
+  VIRTUAL = 2,
+  ANNOUNCED = 3,
+};
 
 enum CSEType
 {
@@ -21,7 +29,7 @@ enum CSEType
 };
 
 // also used for MemberType
-enum ResourceType
+enum SupportedResourceType
 {
   // Normal Resources
 
@@ -71,5 +79,182 @@ enum ResourceType
   FAN_OUT_POINT = 90003,
   POLLING_CHANNEL_URI = 90004,
 };
+
+enum LocationSource
+{
+  NETWORK_BASED = 1,
+  DEVICE_BASED = 2,
+  SHARING_BASED = 3,
+};
+
+enum EventCat
+{
+  // stdEventCats from 1 to 4:
+
+  STD_EVENT_CATS_DEFAULT = 1,
+  STD_EVENT_CATS_IMMEDIATE = 2,
+  STD_EVENT_CATS_BEST_EFFORT = 3,
+  STD_EVENT_CATS_LATEST = 4,
+
+  // user defined events 100-999
+};
+
+// RFC 6838 defined media types
+enum ContentType
+{
+  APPLICATION_XML = 1,
+  APPLICATION_JSON = 2,
+};
+
+enum FilterUsage
+{
+  DISCOVERY_CRITERIA = 1,
+  EVENT_NOTIFICATION_CRITERIA = 2,
+};
+
+enum DiscoveryResultType
+{
+  DISC_RES_TYPE_HIERARCHICAL = 1,
+  DISC_RES_TYPE_NON_HIERARCHICAL = 2,
+  DISC_RES_TYPE_CSEID_RESOURCEID = 3,
+};
+
+enum Operation
+{
+  OPERATION_CREATE = 1,
+  OPERATION_RETRIEVE = 2,
+  OPERATION_UPDATE = 3,
+  OPERATION_DELETE = 4,
+  OPERATION_NOTIFY = 5,
+};
+
+enum ResponseType
+{
+  NON_BLOCKING_REQUEST_SYNC = 1,
+  NON_BLOCKING_REQUEST_ASYNC = 2,
+  BLOCKING_REQUEST = 3,
+};
+
+enum ResultContent
+{
+  RESULT_CONTENT_NOTHING = 1,
+  RESULT_CONTENT_ATTRIBUTES = 2,
+  RESULT_CONTENT_HADDR = 3,	// Hierachical address
+  RESULT_CONTENT_HADDR_CHILD = 4,	// Hierachical address and child resource
+  RESULT_CONTENT_ATTR_CHILD = 5,	// Attributes and child resource references
+  RESULT_CONTENT_CHILD = 6,	// Child resource references
+  RESULT_CONTENT_ORIGINAL = 7,	// Original resource
+};
+
+enum RequestStatus
+{
+  REQUEST_STATUS_COMPLETED = 1,
+  REQUEST_STATUS_FAILED = 2,
+  REQUEST_STATUS_PENDING = 3,
+  REQUEST_STATUS_FORWARDED = 4,
+};
+
+enum ConsistencyStrategy
+{
+  ABONDON_MEMBER = 1,
+  ABONDON_GROUP = 2,
+  SET_MIXED = 3,
+};
+
+enum CmdType
+{
+  CMD_TYPE_RESET = 1,
+  CMD_TYPE_REBOOT = 2,
+  CMD_TYPE_UPLOAD = 3,
+  CMD_TYPE_DOWNLOAD = 4,
+  CMD_TYPE_SW_INSTALL = 5,
+  CMD_TYPE_SW_UNINSTALL = 6,
+  CMD_TYPE_SW_UPDATE = 7,
+};
+
+enum ExecModeType
+{
+  IMMEDIATE_ONCE = 1,
+  IMMEDIATE_REPEAT = 2,
+  RANDOM_ONCE = 3,
+  RANDOM_REPEAT = 4,
+};
+
+enum ExecStatusType
+{
+  EXEC_STATUS_INITIATED = 1,
+  EXEC_STATUS_PENDING = 2,
+  EXEC_STATUS_FINISHED = 3,
+  EXEC_STATUS_CANCELLING = 4,
+  EXEC_STATUS_CANCELLED = 5,
+  EXEC_STATUS_UNCANCELLABLE = 6,
+};
+
+enum ExecResultType
+{
+  EXEC_RESULT_TYPE_NONE = 0,
+
+};
+
+ enum PointOfAccess
+ {
+   IPV4 = 1,
+   IPV6 = 2,
+   FQDN = 3,
+ };
+
+ enum ResponseStatusCode
+ {
+   RSC_NONE = 0,
+
+    // Informational response class
+   RSC_ACCEPTED = 1000,
+
+   // Successful response class
+   RSC_OK = 2000,
+   RSC_CREATED = 2001,
+   RSC_DELETED = 2002,
+   RSC_CHANGED = 2003,
+
+   // Redirection class
+
+   // Originator Error class
+   RSC_BAD_REQUEST = 4000,
+   RSC_NOT_FOUND = 4004,
+   RSC_OPERATION_NOT_ALLOWED = 4005,
+   RSC_REQUEST_TIMEOUT = 4008,
+   RSC_SUB_CREATOR_HAS_NO_PRIVILEGE = 4101,
+   RSC_CONTENTS_UNACCEPTED = 4102,
+   RSC_ACCESS_DENIED = 4103,
+   RSC_GROUP_REQUEST_ID_EXISTS = 4104,
+   RSC_CONFLICT = 4105,
+
+   // Receiver error class
+   RSC_INTERNAL_SERVER_ERROR = 5000,
+   RSC_NOT_IMPLEMENTED = 5001,
+   RSC_TARGET_NOT_REACHABLE = 5103,
+   RSC_NO_PREVILEGE = 5105,
+   RSC_ALREADY_EXISTS = 5106,
+   RSC_TAGET_NOT_SUBSCIBABLE = 5203,
+   RSC_SUB_VERIFICATION_INIT_FAILED = 5204,
+   RSC_SUB_HOST_HAS_NO_PRIVILEGE = 5205,
+   RSC_NON_BLOCKING_REQUEST_NOT_SUPPORTED = 5206,
+
+   // Network error class
+   RSC_EXT_OBJ_NOT_REACHABLE = 6003,
+   RSC_EXT_OBJ_NOT_FOUND = 6005,
+   RSC_MAX_MEMBER_EXCEEDED = 6010,
+   RSC_MEMBER_TYPE_INCONSISTENT = 6011,
+   RSC_MGMT_SESSION_CANNOT_ESTABLISH = 6020,
+   RSC_MGMT_SESSION_ESTABLISHMENT_TIMEOUT = 6021,
+   RSC_INVALID_CMDTYPE = 6022,
+   RSC_INVALID_ARGUMENTS = 6023,
+   RSC_INSUFFICIENT_ARGUMENTS = 6024,
+   RSC_MGMT_CONVERSION_ERROR = 6025,
+   RSC_MGMT_CANCELATION_FAILURE = 6026,
+   RSC_ALREADY_COMPLETE = 6028,
+   RSC_COMMAND_NOT_CANCALLABLE = 6029,
+
+ };
 
 #endif /* INCLUDE_COMMONTYPES_H_ */

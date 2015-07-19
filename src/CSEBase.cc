@@ -133,14 +133,14 @@ bool CSEBase::setLastModifiedTimestamp(TimeStamp &lt) {
 	}
 }
 
-int CSEBase::getSupportedResource(ResourceType *&rt) {
+int CSEBase::getSupportedResource(SupportedResourceType *&rt) {
 	google::protobuf::RepeatedField<int> * _rt =
 			cse_base_.mutable_srt();
-    rt = (ResourceType *)_rt->mutable_data();
+    rt = (SupportedResourceType *)_rt->mutable_data();
 	return cse_base_.srt_size();
 }
 
-bool CSEBase::isResourceSupported(ResourceType rt) {
+bool CSEBase::isResourceSupported(SupportedResourceType rt) {
 	google::protobuf::RepeatedField<int>::const_iterator _it;
 	const google::protobuf::RepeatedField<int>& _srt =
 			cse_base_.srt();

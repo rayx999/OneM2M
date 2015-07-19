@@ -41,8 +41,8 @@ public:
 	bool getCreateTimestamp(TimeStamp &create_time);
 	bool getLastModifiedTimestamp(TimeStamp &create_time);
 
-	int getSupportedResource(ResourceType *&rt);
-	bool isResourceSupported(ResourceType rt);
+	int getSupportedResource(SupportedResourceType *&rt);
+	bool isResourceSupported(SupportedResourceType rt);
 
 	bool outToFile(const char * fn);
 	string getJson();
