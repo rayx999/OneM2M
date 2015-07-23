@@ -8,6 +8,7 @@
 #ifndef INCLUDE_COMMONUTILS_H_
 #define INCLUDE_COMMONUTILS_H_
 
+#include <iostream>
 #include <stdlib.h>
 
 enum ValidateType {
@@ -16,7 +17,7 @@ enum ValidateType {
 };
 
 template <typename T>
-bool setString(std::string & s, void (T::*setter)(std::string *), T & t) {
+bool setString(const std::string & s, void (T::*setter)(std::string *), T & t) {
 	std::string * _p = new std::string(s);
 
 	if (_p == NULL) {

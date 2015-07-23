@@ -11,6 +11,10 @@
 
 #include <sys/time.h>
 
+namespace MicroWireless {
+
+namespace OneM2M {
+
 typedef struct timeval	TimeStamp;
 typedef struct timeval	Duration;
 
@@ -256,5 +260,8 @@ enum ExecResultType
    RSC_COMMAND_NOT_CANCALLABLE = 6029,
 
  };
+
+}	// OneM2M
+}	// MicroWireless
 
 #endif /* INCLUDE_COMMONTYPES_H_ */

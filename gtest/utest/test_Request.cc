@@ -16,19 +16,15 @@ using namespace MicroWireless::OneM2M;
 
 class RequestTest : public ::testing::Test {
 	protected:
-	string request_json;
+	static const string request_json;
+	static const string to_;
+	static const string fr_;
+	static const string rqi_;
 	Operation op_;
-	string to_;
-	string fr_;
-	string rqi_;
 	Request * p_request_;
 
 	RequestTest() {
-		request_json = string("{\"op\": 2, \"to\": \"//microwireless.com/IN-CSE-01\", \"rqi\": \"ab3f124a\", \"fr\": \"//microwireless.com/AE-01\"}");
 		op_ = OPERATION_RETRIEVE;
-		to_ = string("//microwireless.com/IN-CSE-01");
-		fr_ = string("//microwireless.com/AE-01");
-		rqi_ = string("ab3f124a");
 		p_request_ = NULL;
 	}
 
@@ -67,6 +63,11 @@ class RequestTest : public ::testing::Test {
 		}
 	}
 };
+
+const string RequestTest::request_json("{\"op\": 2, \"to\": \"//microwireless.com/IN-CSE-01\", \"rqi\": \"ab3f124a\", \"fr\": \"//microwireless.com/AE-01\"}");
+const string RequestTest::to_("//microwireless.com/IN-CSE-01");
+const string RequestTest::fr_("//microwireless.com/AE-01");
+const string RequestTest::rqi_("ab3f124a");
 
 TEST_F(RequestTest, FullCtor) {
 	try {

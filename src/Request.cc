@@ -17,7 +17,11 @@
 using namespace std;
 using namespace MicroWireless::OneM2M;
 
-Request::Request(string & json) {
+namespace MicroWireless {
+
+namespace OneM2M {
+
+Request::Request(const string & json) {
 	// parse to PB buffer
 	json2pb(request_pb_, json.c_str(), json.length());
 
@@ -26,7 +30,7 @@ Request::Request(string & json) {
 	}
 }
 
-Request::Request(Operation op, string & to, string & fr, string & rqi) {
+Request::Request(Operation op, const string & to, const string & fr, const string & rqi) {
 	if (to.empty() || fr.empty() || rqi.empty()) {
 		throw runtime_error("Request mandatory fields to, from, or requestId missing!");
 	}
@@ -150,3 +154,6 @@ bool Request::isValid(ValidateType vt) {
 string Request::getJson() {
 	return pb2json(request_pb_);
 }
+
+}	// OneM2M
+}	// MicroWireless

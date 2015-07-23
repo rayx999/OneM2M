@@ -1,0 +1,45 @@
+CC        := g++
+LD        := g++
+
+G_DIR     := src-gen
+SRC_DIR   := src $(G_DIR)
+BUILD_DIR := build
+
+SRC       := $(foreach sdir,$(SRC_DIR),$(wildcard $(sdir)/*.cc))
+OBJ       := $(patsubst %.cc,build/%.o,$(SRC))
+LIBS      := -ljson2pb -ljansson -lprotobuf -lpthread
+
+# Elements build, CSE, AE, NSE, etc.
+E_DIR     := cse nse
+E_SRC     := $(foreach sdir,$(E_DIR),$(wildcard $(sdir)/*.cc))
+E_OBJ     := $(patsubst %.cc,build/%.o,$(E_SRC))
+E_FLG     := -D_WIN32_WINNT=0x0501 -D__USE_W32_SOCKETS -std=c++11
+E_INC     := -Iinclude $(addprefix -I,$(E_DIR) $(G_DIR))
+E_LIB     := $(LIBS) -lboost_system -lws2_32
+
+.PHONY: all checkdirs clean CSEtest
+
+all: checkdirs CSEtest
+
+CSEtest: $(BUILD_DIR)/CSEMain.exe 
+
+$(BUILD_DIR)/CSEMain.exe: $(OBJ) $(E_OBJ)
+	$(LD) $^ $(E_LIB) -o $@
+
+#utest-run:
+#	@rm -rf $(BUILD_DIR)/data
+#	@cp -rf gtest/data $(BUILD_DIR)
+#	@cd $(BUILD_DIR) && ./utest.exe
+			
+checkdirs: $(addprefix $(BUILD_DIR)/,$(SRC_DIR) $(E_DIR))
+
+$(addprefix $(BUILD_DIR)/,$(SRC_DIR) $(E_DIR)):
+	@mkdir -p $@
+
+clean:
+	@rm -rf $(BUILD_DIR) 
+	#@rm $(G_DIR)/*
+
+$(BUILD_DIR)/%.o: %.cc
+	$(CC) -Wall $(E_INC) $(E_FLG) -g -c $< -o $@
+

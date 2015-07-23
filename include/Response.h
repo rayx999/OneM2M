@@ -10,28 +10,31 @@
 
 #include "Response.pb.h"
 #include "CommonTypes.h"
-#include "CommonUtils.h"
 #include "Request.h"
 
 using namespace std;
 using namespace MicroWireless::OneM2M;
 
+namespace MicroWireless {
+
+namespace OneM2M {
+
 class Response
 {
 public:
-	Response(Request * p_request, string &json);
-	Response(Request * p_request, ResponseStatusCode rsc, string & rqi);
+	Response(Request * p_request, const string &json);
+	Response(Request * p_request, ResponseStatusCode rsc, const string & rqi);
 
 	ResponseStatusCode getResponseStatusCode();
 	const string & getRequestId();
 
-	bool setContent(string & pc);
+	bool setContent(const string & pc);
 	const string & getContent();
 
-	bool setTo(string & to);
+	bool setTo(const string & to);
 	const string & getTo();
 
-	bool setFrom(string & fr);
+	bool setFrom(const string & fr);
 	const string & getFrom();
 
 	bool setOriginatingTimestamp(TimeStamp &ot);
@@ -52,5 +55,8 @@ private:
 	Request * p_request_;		// matching request.
 	pb::Response response_pb_;
 };
+
+}	// OneM2M
+}	// MicroWireless
 
 #endif /* INCLUDE_RESPONSE_H_ */

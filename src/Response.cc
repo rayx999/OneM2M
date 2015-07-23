@@ -18,8 +18,11 @@
 using namespace std;
 using namespace MicroWireless::OneM2M;
 
+namespace MicroWireless {
 
-Response::Response(Request *p_request, string &json) {
+namespace OneM2M {
+
+Response::Response(Request *p_request, const string &json) {
 	// keep original request reference
 	if (p_request == NULL || !p_request->isValid()) {
 		throw runtime_error("Matching request is invalid!");
@@ -34,7 +37,7 @@ Response::Response(Request *p_request, string &json) {
 	}
 }
 
-Response::Response(Request *p_request, ResponseStatusCode rsc, string & rqi){
+Response::Response(Request *p_request, ResponseStatusCode rsc, const string & rqi){
 	if (rqi.empty()) {
 		throw runtime_error("Response mandatory field: requestId missing!");
 	}
@@ -58,7 +61,7 @@ const string & Response::getRequestId() {
 	return response_pb_.rqi();
 }
 
-bool Response::setContent(string & pc) {
+bool Response::setContent(const string & pc) {
 	return setString(pc, &pb::Response::set_allocated_pc, response_pb_);
 }
 
@@ -66,7 +69,7 @@ const string & Response::getContent() {
 	return response_pb_.pc();
 }
 
-bool Response::setTo(string & to) {
+bool Response::setTo(const string & to) {
 	return setString(to, &pb::Response::set_allocated_to, response_pb_);
 }
 
@@ -74,7 +77,7 @@ const string & Response::getTo() {
 	return response_pb_.to();
 }
 
-bool Response::setFrom(string & fr) {
+bool Response::setFrom(const string & fr) {
 	return setString(fr, &pb::Response::set_allocated_fr, response_pb_);
 }
 
@@ -135,3 +138,5 @@ Response::~Response() {
 	} */
 }
 
+}	// OneM2M
+}	// MicroWireless

@@ -15,11 +15,15 @@
 using namespace std;
 using namespace MicroWireless::OneM2M;
 
+namespace MicroWireless {
+
+namespace OneM2M {
+
 class Request
 {
 public:
-	Request(string &json);
-	Request(Operation op, string & to, string & fr, string & rqi);
+	Request(const string &json);
+	Request(Operation op, const string & to, const string & fr, const string & rqi);
 
 	Operation getOperation();
 
@@ -84,4 +88,8 @@ class Retrieve : public Request
 
 };
 */
+
+}	// OneM2M
+}	// MicroWireless
+
 #endif /* INCLUDE_REQUEST_H_ */

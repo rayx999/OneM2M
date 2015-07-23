@@ -16,25 +16,19 @@ using namespace MicroWireless::OneM2M;
 
 class ResponseTest : public ::testing::Test {
 	protected:
-	string request_json;
-	string response_json;
-	ResponseStatusCode rsc_ok_ = RSC_OK;
-	string rqi_;
-	string to_;
-	string fr_;
+	static const string request_json;
+	static const string response_json;
+	static const string rqi_;
+	static const string to_;
+	static const string fr_;
 	string pc_;
+	ResponseStatusCode rsc_ok_;
 	Response * p_response_;
 	Request * p_request_;
 
 	ResponseTest() {
-		request_json = string("{\"op\": 2, \"to\": \"//microwireless.com/IN-CSE-01\", \"rqi\": \"ab3f124a\", \"fr\": \"//microwireless.com/AE-01\"}");
-		response_json = string("{\"rsc\": 2000, \"rqi\": \"ab3f124a\"}");
 		rsc_ok_ = RSC_OK;
-		rqi_ = string("ab3f124a");
-		to_ = string("//microwireless.com/IN-CSE-01");
-		fr_ = string("//microwireless.com/AE-01");
 		pc_ = request_json;
-
 		p_response_ = NULL;
 		p_request_ = NULL;
 	}
@@ -52,7 +46,7 @@ class ResponseTest : public ::testing::Test {
 		return p_response_->getRequestId();
 	}
 
-	bool setContent(string & pc) {
+	bool setContent(const string & pc) {
 		return p_response_->setContent(pc);
 	}
 
@@ -60,7 +54,7 @@ class ResponseTest : public ::testing::Test {
 		return p_response_->getContent();
 	}
 
-	bool setTo(string & to) {
+	bool setTo(const string & to) {
 		return p_response_->setTo(to);
 	}
 
@@ -68,7 +62,7 @@ class ResponseTest : public ::testing::Test {
 		return p_response_->getTo();
 	}
 
-	bool setFrom(string & fr) {
+	bool setFrom(const string & fr) {
 		return p_response_->setFrom(fr);
 	}
 
@@ -87,6 +81,12 @@ class ResponseTest : public ::testing::Test {
 		}
 	}
 };
+
+const string ResponseTest::request_json("{\"op\": 2, \"to\": \"//microwireless.com/IN-CSE-01\", \"rqi\": \"ab3f124a\", \"fr\": \"//microwireless.com/AE-01\"}");
+const string ResponseTest::response_json("{\"rsc\": 2000, \"rqi\": \"ab3f124a\"}");
+const string ResponseTest::rqi_("ab3f124a");
+const string ResponseTest::to_("//microwireless.com/IN-CSE-01");
+const string ResponseTest::fr_("//microwireless.com/AE-01");
 
 TEST_F(ResponseTest, FullCtor) {
 	try {

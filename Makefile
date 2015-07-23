@@ -3,7 +3,7 @@ LD        := g++
 
 R_DIR     := resource
 G_DIR     := src-gen
-SRC_DIR   := src $(G_DIR)
+SRC_DIR   := src nse $(G_DIR)
 UT_DIR    := gtest/gtest gtest/utest
 BUILD_DIR := build
 
@@ -17,12 +17,9 @@ INCLUDES  := -Iinclude -Igtest $(addprefix -I,$(SRC_DIR) $(UT_DIR))
 LIBS      := -ljson2pb -ljansson -lprotobuf -lpthread
 UT_LIBS   := -lboost_iostreams -L/usr/local/lib
 
-.PHONY: all checkdirs clean utest-run protoc
+.PHONY: all checkdirs clean utest-run protoc 
 
 all: checkdirs build/utest.exe utest-run
-
-$(BUILD_DIR)/test.exe: test/test_CSEBase.cc $(OBJ)
-	$(LD) $^ $(LIBS) -o $@
 
 $(BUILD_DIR)/utest.exe: $(OBJ) $(UT_OBJ)
 	$(LD) $^ $(LIBS) $(UT_LIBS) -o $@
@@ -49,4 +46,4 @@ clean:
 	#@rm $(G_DIR)/*
 
 $(BUILD_DIR)/%.o: %.cc
-	$(CC) $(INCLUDES) -g -c $< -o $@
+	$(CC) -Wall -g -c $(INCLUDES) $< -o $@
