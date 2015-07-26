@@ -38,9 +38,5 @@ bool RequestHandler::isResourceValid() {
 	return true;
 }
 
-void RequestHandler::run() {
-	nse_.run();
-}
-
 }	// OneM2M
 }	// MicroWireless

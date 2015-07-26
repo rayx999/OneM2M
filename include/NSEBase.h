@@ -23,12 +23,17 @@ public:
 	NSEBase(const std::string& ip, const std::string& port)
 		: ip_(ip), port_(port) { } ;
 
-	void setRequestHandler(RequestHandler & req_hdl);
-	void send(Response& rsp);
-	void run();
+	void setRequestHandler(RequestHandler& req_hdl) {
+		request_handler_ = &req_hdl;
+	};
+
+	virtual void send(Response& rsp) { };
+	virtual void run() { };
+
+	virtual ~NSEBase() { };
 
 private:
-//	RequestHandler & request_handler_;
+	RequestHandler * request_handler_;
 	const std::string & ip_, port_;
 };
 

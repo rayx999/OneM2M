@@ -5,6 +5,7 @@
  *      Author: weimi_000
  */
 
+#include <stdexcept>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -27,6 +28,13 @@ CSEBase::CSEBase() {
 	gettimeofday(&_ct, NULL);
 
 	setCreateTimestamp(_ct);
+}
+
+CSEBase::CSEBase(const char * fn) {
+	CSEBase();
+	if (!setCSEBase(fn)) {
+		throw runtime_error("Set CSE resource file failed.");
+	}
 }
 
 bool CSEBase::setCSEBase(const char * fn) {

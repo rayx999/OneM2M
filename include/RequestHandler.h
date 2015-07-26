@@ -30,8 +30,6 @@ public:
 
 	virtual void handleRequest(Request& request);
 
-	void run();
-
 protected:
 	ResponseStatusCode isForMe(Request& req, CSEBase& cse);
 	bool isResourceValid();

@@ -24,6 +24,10 @@
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.archiver.cygwin.base.1361660225" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.cygwin.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.1027451065" name="Cygwin C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base">
+								<option id="gnu.cpp.compiler.option.include.paths.1129263669" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;C:\Workspace\gmock-1.7.0\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Workspace\gmock-1.7.0\gtest\include&quot;"/>
+								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.947320924" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base.838794160" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base">
@@ -42,15 +46,6 @@
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
 		</cconfiguration>
-	</storageModule>
-	<storageModule moduleId="scannerConfiguration">
-		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.cygwin.base.155782318;cdt.managedbuild.toolchain.gnu.cygwin.base.155782318.1752691261;cdt.managedbuild.tool.gnu.c.compiler.cygwin.base.761762869;cdt.managedbuild.tool.gnu.c.compiler.input.cygwin.1534437109">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.cygwin.base.155782318;cdt.managedbuild.toolchain.gnu.cygwin.base.155782318.1752691261;cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.195680728;cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.1705213811">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="OneM2M.null.793311016" name="OneM2M"/>
@@ -99,5 +94,20 @@
 				<runAllBuilders>false</runAllBuilders>
 			</target>
 		</buildTargets>
+	</storageModule>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.cygwin.base.1406804075;cdt.managedbuild.toolchain.gnu.cygwin.base.1406804075.418829359;cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.1027451065;cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.947320924">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.cygwin.base.155782318;cdt.managedbuild.toolchain.gnu.cygwin.base.155782318.1752691261;cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.195680728;cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.1705213811">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.cygwin.base.1406804075;cdt.managedbuild.toolchain.gnu.cygwin.base.1406804075.418829359;cdt.managedbuild.tool.gnu.c.compiler.cygwin.base.838794160;cdt.managedbuild.tool.gnu.c.compiler.input.cygwin.1214184245">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.cygwin.base.155782318;cdt.managedbuild.toolchain.gnu.cygwin.base.155782318.1752691261;cdt.managedbuild.tool.gnu.c.compiler.cygwin.base.761762869;cdt.managedbuild.tool.gnu.c.compiler.input.cygwin.1534437109">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
 	</storageModule>
 </cproject>

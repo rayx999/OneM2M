@@ -39,7 +39,8 @@ class ResponseTest : public ::testing::Test {
 	}
 
 	ResponseStatusCode getResponseStatusCode() {
-		return p_response_->getResponseStatusCode();
+		return static_cast<const ResponseTest*>(this)->p_response_->getResponseStatusCode();
+		//return c->p_response_->getResponseStatusCode();
 	}
 
 	const string & getRequestId() {

@@ -25,7 +25,7 @@ public:
 	Response(Request * p_request, const string &json);
 	Response(Request * p_request, ResponseStatusCode rsc, const string & rqi);
 
-	ResponseStatusCode getResponseStatusCode();
+	const ResponseStatusCode getResponseStatusCode() const;
 	const string & getRequestId();
 
 	bool setContent(const string & pc);

@@ -29,6 +29,7 @@ class CSEBase {
 
 public:
 	CSEBase();
+	CSEBase(const char* fn);
 	bool setCSEBase(const char * fn = DEFAULT_CSEBASE_FN);
 	bool setCSEBase(stringstream &sbuf);
 

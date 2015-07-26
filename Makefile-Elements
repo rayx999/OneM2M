@@ -10,30 +10,45 @@ OBJ       := $(patsubst %.cc,build/%.o,$(SRC))
 LIBS      := -ljson2pb -ljansson -lprotobuf -lpthread
 
 # Elements build, CSE, AE, NSE, etc.
-E_DIR     := cse nse
+E_DIR     := cse
 E_SRC     := $(foreach sdir,$(E_DIR),$(wildcard $(sdir)/*.cc))
 E_OBJ     := $(patsubst %.cc,build/%.o,$(E_SRC))
-E_FLG     := -D_WIN32_WINNT=0x0501 -D__USE_W32_SOCKETS -std=c++11
+E_FLG     := -D_WIN32_WINNT=0x0501 -D__USE_W32_SOCKETS -std=gnu++11
 E_INC     := -Iinclude $(addprefix -I,$(E_DIR) $(G_DIR))
 E_LIB     := $(LIBS) -lboost_system -lws2_32
 
-.PHONY: all checkdirs clean CSEtest
+GMOCK_DIR := utest/gmock
+GMOCK_SRC := $(foreach sdir,$(GMOCK_DIR),$(wildcard $(sdir)/*.cc))
+GMOCK_OBJ := $(patsubst %.cc,build/%.o,$(GMOCK_SRC))
+GMOCK_FIL := %CSEMain.o
+GMOCK_ALL := $(GMOCK_OBJ) $(OBJ) $(filter-out $(GMOCK_FIL),$(E_OBJ)) 
+GMOCK_INC := -I$(GMOCK_INC) -I$(GMOCK_GTEST_INC)
+GMOCK_LIB := -L $(GMOCK_LIB) -L $(GMOCK_GTEST_LIB) -lgmock -lgmock_main -lgtest
 
-all: checkdirs CSEtest
+.PHONY: all checkdirs clean CSEMain gmock
 
-CSEtest: $(BUILD_DIR)/CSEMain.exe 
+all: checkdirs CSEMain gmock
+
+CSEMain: $(BUILD_DIR)/CSEMain.exe 
 
 $(BUILD_DIR)/CSEMain.exe: $(OBJ) $(E_OBJ)
 	$(LD) $^ $(E_LIB) -o $@
+	
 
+gmock: $(BUILD_DIR)/gmock.exe
+
+$(BUILD_DIR)/gmock.exe: $(GMOCK_ALL) 
+	$(LD) $^ $(GMOCK_LIB) $(E_LIB) -o $@
+	./$(BUILD_DIR)/gmock.exe
+  
 #utest-run:
 #	@rm -rf $(BUILD_DIR)/data
 #	@cp -rf gtest/data $(BUILD_DIR)
 #	@cd $(BUILD_DIR) && ./utest.exe
 			
-checkdirs: $(addprefix $(BUILD_DIR)/,$(SRC_DIR) $(E_DIR))
+checkdirs: $(addprefix $(BUILD_DIR)/,$(SRC_DIR) $(E_DIR) $(GMOCK_DIR))
 
-$(addprefix $(BUILD_DIR)/,$(SRC_DIR) $(E_DIR)):
+$(addprefix $(BUILD_DIR)/,$(SRC_DIR) $(E_DIR) $(GMOCK_DIR)):
 	@mkdir -p $@
 
 clean:
@@ -41,5 +56,5 @@ clean:
 	#@rm $(G_DIR)/*
 
 $(BUILD_DIR)/%.o: %.cc
-	$(CC) -Wall $(E_INC) $(E_FLG) -g -c $< -o $@
+	$(CC) $(E_INC) $(GMOCK_INC) $(E_FLG) -g -c $< -o $@
 

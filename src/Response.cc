@@ -53,7 +53,7 @@ Response::Response(Request *p_request, ResponseStatusCode rsc, const string & rq
 	}
 }
 
-ResponseStatusCode Response::getResponseStatusCode() {
+const ResponseStatusCode Response::getResponseStatusCode() const {
 	return static_cast<ResponseStatusCode>(response_pb_.rsc());
 }
 

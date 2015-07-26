@@ -11,38 +11,13 @@
 #include <fstream>
 
 #include "CSEBase.h"
-#include "CSEHandler.h"
 #include "NSEBase.h"
+#include "CSEHandler.h"
+#include "CSEServer.h"
 
 using namespace MicroWireless::OneM2M;
 
-/*
-class CSEServer
-{
-public:
-  /// Construct the server to listen on the specified TCP address and port, and
-  /// serve up files from the given directory.
-  CSEServer(const std::string& address, const std::string& port, CSEBase& cse);
 
-  /// Run the server's io_service loop.
-  void run();
-
-private:
-  CSEHandler cse_hdl_;
-};
-
-CSEServer::CSEServer(const std::string& ip, const std::string& port,
-		CSEBase& cse) : cse_hdl_(cse) {
-
-	NSEBase nse_(ip, port);
-	cse_hdl_ = CSEHandler(nse_, cse);
-	nse_.setRequestHandler(cse_hdl_);
-}
-
-void CSEServer::run() {
-	cse_hdl_.nse_.run();
-}
-*/
 int main(int argc, char* argv[])
 {
 
@@ -70,16 +45,12 @@ int main(int argc, char* argv[])
 
   try
   {
-	CSEBase cse_;
-	if (!cse_.setCSEBase(cse_fn)) {
-		throw runtime_error("CSE set resource file error: " + string(cse_fn));
-	}
-
+	CSEBase cse_(cse_fn);
 	NSEBase nse_(argv[1], argv[2]);
-	CSEHandler cse_hdl_(nse_, cse_);
-	nse_.setRequestHandler(cse_hdl_);
+	CSEHandler hdl_(nse_, cse_);
+	CSEServer server_(cse_, nse_, hdl_);
 
-	cse_hdl_.run();
+	server_.run();
   }
   catch (std::exception& e)
   {
