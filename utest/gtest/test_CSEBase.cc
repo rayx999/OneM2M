@@ -89,7 +89,7 @@ TEST_F(CSEBaseTest, JsonWithCreateTime) {
 	stringstream buf;
 	buf << ins.rdbuf();
 	//cout << buf.str() << endl;
-	ASSERT_TRUE(cse_base.setCSEBase(buf));
+	ASSERT_TRUE(cse_base.setCSEBase(buf.str()));
 	//cout << cse_base.getJson() << endl;
 }
 
@@ -107,12 +107,54 @@ TEST_F(CSEBaseTest, JsonWOCreateTime) {
 	stringstream buf;
 	buf << ins.rdbuf();
 
-	ASSERT_TRUE(cse_base.setCSEBase(buf));
+	ASSERT_TRUE(cse_base.setCSEBase(buf.str()));
 
 	// check original timestamp persist after loading json file w/o ct
 	TimeStamp _check_ct;
 	ASSERT_TRUE(cse_base.getCreateTimestamp(_check_ct));
 	ASSERT_TSEQ(_original_ct, _check_ct);
+}
+
+TEST_F(CSEBaseTest, JsonConflictCSEId) {
+	static const string json("{"
+					"\"ty\" 	: 1,"
+					"\"ri\" 	: \"//microwireless.com/IN-CSE-00/CSEBASE\","
+					"\"rn\" 	: \"CSEBASE\","
+					"\"ct\" 	: { \"seconds\" : 1435434103 },"
+					"\"cst\" 	: 1,"
+					"\"csi\" 	: \"/IN-CSE-01\","
+					"\"srt\" 	: [ 2, 5, 16 ]"
+				"}");
+
+	try {
+		CSEBase cse_base_(json);
+	} catch (exception &e) {
+		cout << "Excepted exception: " << e.what() << endl;
+		return;
+	}
+	cerr << "Excepted exception doesn't occur." << endl;
+	ASSERT_TRUE(false);
+}
+
+TEST_F(CSEBaseTest, JsonConflictResourceName) {
+	static const string json("{"
+					"\"ty\" 	: 1,"
+					"\"ri\" 	: \"//microwireless.com/IN-CSE-00/CSE\","
+					"\"rn\" 	: \"CSEBase\","
+					"\"ct\" 	: { \"seconds\" : 1435434103 },"
+					"\"cst\" 	: 1,"
+					"\"csi\" 	: \"/IN-CSE-01\","
+					"\"srt\" 	: [ 2, 5, 16 ]"
+				"}");
+
+	try {
+		CSEBase cse_base_(json);
+	} catch (exception &e) {
+		cout << "Excepted exception: " << e.what() << endl;
+		return;
+	}
+	cerr << "Excepted exception doesn't occur." << endl;
+	ASSERT_TRUE(false);
 }
 
 TEST_F(CSEBaseTest, ResourceConstructor) {
@@ -150,6 +192,7 @@ TEST_F(CSEBaseTest, GetAttributes) {
 	ASSERT_EQ(getCSEType(), IN_CSE);
 	ASSERT_STREQ(getResourceId().c_str(), "//microwireless.com/IN-CSE-01/CSEBASE");
 	ASSERT_STREQ(getResourceName().c_str(), "CSEBASE");
+	ASSERT_STREQ(cse_base.getDomain().c_str(), "//microwireless.com");
 }
 
 TEST_F(CSEBaseTest, CheckLastModifiedTime) {
@@ -178,3 +221,4 @@ TEST_F(CSEBaseTest, GetSupportedResource) {
 	SupportedResourceType _srt[] = {AE,CSE_BASE,REMOTE_CSE};
 	UTest::ASSERT_ARREQ(_rt, _srt, 3);
 }
+

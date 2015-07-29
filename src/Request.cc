@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <sstream>
+#include <regex>
 #include <json2pb.h>
 
 #include "Request.pb.h"
@@ -28,6 +29,8 @@ Request::Request(const string & json) {
 	if (!isValid()) {
 		throw runtime_error("Request in JSON not valid!");
 	}
+
+	parseIdInfo();
 }
 
 Request::Request(Operation op, const string & to, const string & fr, const string & rqi) {
@@ -43,6 +46,8 @@ Request::Request(Operation op, const string & to, const string & fr, const strin
 	if (!isValid()) {
 		throw runtime_error("Request constructor failed!");
 	}
+
+	parseIdInfo();
 }
 
 const string & Request::getTo() {
@@ -55,6 +60,10 @@ const string & Request::getFrom() {
 
 const string & Request::getRequestId() {
 	return request_pb_.rqi();
+}
+
+const string & Request::getTargetResource() {
+	return rn_;
 }
 
 Operation Request::getOperation() {
@@ -114,6 +123,28 @@ bool setDiscoveryResultType(DiscoveryResultType drt);
 DiscoveryResultType getDiscoveryResultType();
 
 #endif
+
+void Request::parseIdInfo() {
+	// to = //domain/cseid/resource, case insensitive
+	static regex pattern_("(//[.\\w-]+)(/[\\w-]+)/([\\w-]+)");
+	smatch sm;
+
+	regex_match(getTo(), sm, pattern_);
+	switch (sm.size()) {
+	case 4:
+	case 3: rn_ = sm[3];
+	case 2: csi_ = sm[2];
+	case 1: domain_ = sm[1];
+			break;
+	default:
+		cerr << "regex match error on " << getTo() << endl;
+	}
+}
+
+void Request::getIdInfo(string& domain, string& csi) {
+	domain = domain_;
+	csi = csi_;
+}
 
 bool Request::isValid(ValidateType vt) {
 	if (request_pb_.to().empty() ||

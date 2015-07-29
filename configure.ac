@@ -1,5 +1,0 @@
-
-AC_INIT([CSEBase], [0.01])
-AM_INIT_AUTOMAKE
-AC_OUTPUT([Makefile])
-

@@ -20,6 +20,9 @@ class RequestTest : public ::testing::Test {
 	static const string to_;
 	static const string fr_;
 	static const string rqi_;
+	static const string domain_;
+	static const string csi_;
+	static const string rn_;
 	Operation op_;
 	Request * p_request_;
 
@@ -64,10 +67,13 @@ class RequestTest : public ::testing::Test {
 	}
 };
 
-const string RequestTest::request_json("{\"op\": 2, \"to\": \"//microwireless.com/IN-CSE-01\", \"rqi\": \"ab3f124a\", \"fr\": \"//microwireless.com/AE-01\"}");
-const string RequestTest::to_("//microwireless.com/IN-CSE-01");
+const string RequestTest::request_json("{\"op\": 2, \"to\": \"//microwireless.com/IN-CSE-01/CSEBase\", \"rqi\": \"ab3f124a\", \"fr\": \"//microwireless.com/AE-01\"}");
+const string RequestTest::to_("//microwireless.com/IN-CSE-01/CSEBase");
 const string RequestTest::fr_("//microwireless.com/AE-01");
 const string RequestTest::rqi_("ab3f124a");
+const string RequestTest::domain_("//microwireless.com");
+const string RequestTest::csi_("/IN-CSE-01");
+const string RequestTest::rn_("CSEBase");
 
 TEST_F(RequestTest, FullCtor) {
 	try {
@@ -206,4 +212,14 @@ TEST_F(RequestTest, GetAttributes) {
 	ASSERT_STREQ(getTo().c_str(), to_.c_str());
 	ASSERT_STREQ(getFrom().c_str(), fr_.c_str());
 	ASSERT_STREQ(getRequestId().c_str(), rqi_.c_str());
+}
+
+TEST_F(RequestTest, GetIdInfoAndTargetResource) {
+	string domainC_, csiC_;
+
+	p_request_->getIdInfo(domainC_, csiC_);
+
+	ASSERT_STREQ(domainC_.c_str(), domain_.c_str());
+	ASSERT_STREQ(csiC_.c_str(), csi_.c_str());
+	ASSERT_STREQ(p_request_->getTargetResource().c_str(), rn_.c_str());
 }

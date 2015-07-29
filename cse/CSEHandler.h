@@ -9,6 +9,8 @@
 #define CSE_CSEHANDLER_H_
 
 #include "CommonTypes.h"
+#include "CSEBase.h"
+#include "CSEResourceStore.h"
 #include "RequestHandler.h"
 
 namespace MicroWireless {
@@ -17,23 +19,24 @@ namespace OneM2M {
 using namespace MicroWireless::OneM2M;
 
 class NSEBase;
-class CSEBase;
+//class ResourceStore<CSEBase>;
 class Request;
 class Response;
 
 class CSEHandler : public RequestHandler {
 
 public:
-	CSEHandler(NSEBase& nse, CSEBase& cse)
-		: RequestHandler(nse), cse_(cse) {};
+	CSEHandler(NSEBase& nse, CSEResourceStore& rdb)
+		: RequestHandler(nse), rdb_(rdb) {};
 
 	void handleRequest(Request& request);
 
 private:
-	bool buildResponse(Operation op, Response& rsp);
+	//bool buildResponse(Operation op, Response& rsp);
+	const string * composeContent(Request& req);
 
 private:
-	CSEBase& cse_;
+	CSEResourceStore& rdb_;
 };
 
 }	// OneM2M

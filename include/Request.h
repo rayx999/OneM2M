@@ -33,6 +33,7 @@ public:
 	const string & getTo();
 	const string & getFrom();
 	const string & getRequestId();
+	const string & getTargetResource();
 
 	bool setName(string &nm);
 	bool getName(string &nm);
@@ -76,11 +77,17 @@ public:
 	bool setDiscoveryResultType(DiscoveryResultType drt);
 	DiscoveryResultType getDiscoveryResultType();
 
+	void getIdInfo(string& domain, string& csi);
 	bool isValid(ValidateType vt = VALIDATE_COMMON);
 	string getJson();
 
 private:
+	void parseIdInfo();
+
+private:
 	pb::Request request_pb_;
+	// parsed fields from getTo()
+	string domain_, csi_, rn_;
 };
 /*
 class Retrieve : public Request

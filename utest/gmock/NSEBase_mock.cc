@@ -6,6 +6,8 @@
  */
 
 
+#include <iostream>
+
 //#include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
@@ -13,12 +15,15 @@
 #include "CSEBase.h"
 #include "Request.h"
 #include "Response.h"
+#include "ResourceStore.h"
 #include "NSEBase_mock.h"
+#include "CSEResourceStore.h"
 #include "CSEHandler.h"
 #include "CSEServer.h"
 
 using namespace MicroWireless::OneM2M;
 
+using ::testing::NiceMock;
 using ::testing::Invoke;
 using ::testing::Matcher;
 using ::testing::Property;
@@ -29,7 +34,7 @@ protected:
 	static const std::string retrieve_json;
 	Request * req_;
 	Response * rsp_;
-	CSEBase * cse_;
+	CSEResourceStore * rdb_;
 	NSEBaseMock * nse_;
 	CSEHandler * hdl_;
 	CSEServer * server_;
@@ -37,16 +42,16 @@ protected:
 public:
     virtual void SetUp()
     {
-        cse_ = new CSEBase(DEFAULT_CSEBASE_FN);
-        nse_ = new NSEBaseMock("127.0.0.1", "1234");
-        hdl_ = new CSEHandler(*nse_, *cse_);
-        server_ = new CSEServer(*cse_, *nse_, *hdl_);
+        rdb_ = new CSEResourceStore("data/.store");
+        nse_ = new NiceMock<NSEBaseMock>("127.0.0.1", "1234");
+        hdl_ = new CSEHandler(*nse_, *rdb_);
+        server_ = new CSEServer(*rdb_, *nse_, *hdl_);
         req_ = NULL;
     }
 
     virtual void TearDown()
     {
-        delete cse_;
+        delete rdb_;
         delete nse_;
         delete hdl_;
         delete server_;
@@ -64,12 +69,15 @@ const string NSEBaseMockTest::retrieve_json("{\"op\": 2, \"to\": \"//microwirele
 
 TEST_F(NSEBaseMockTest, RetrieveCSE) {
 
-  EXPECT_CALL(*nse_, run())
-  	  .WillOnce(Invoke(this, &NSEBaseMockTest::handleRequest));
+  EXPECT_CALL(*nse_, run()).Times(1);
+//	  .WillOnce(Invoke(this, &NSEBaseMockTest::handleRequest));
 
-//  Matcher<const Response&> m
-//  	  = Property(&Response::getResponseStatusCode, 2000));
+  std::cout << "EXPECT_CALL() done" << std::endl;
+
   ON_CALL(*nse_, send(Property(&Response::getResponseStatusCode, Eq(RSC_OK))));
+
+  std::cout << "ON_CALL() done" << std::endl;
+
 
   server_->run();
 

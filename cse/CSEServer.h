@@ -10,23 +10,29 @@
 
 
 #include "CommonTypes.h"
-#include "CSEBase.h"
 #include "NSEBase.h"
 #include "CSEHandler.h"
+#include "CSEResourceStore.h"
+
+namespace MicroWireless {
+namespace OneM2M {
 
 using namespace MicroWireless::OneM2M;
 
 class CSEServer
 {
 public:
-	CSEServer(CSEBase& cse, NSEBase& nse, CSEHandler& hdl);
+	CSEServer(CSEResourceStore& rdb, NSEBase& nse, CSEHandler& hdl);
 
 	void run();
 
 private:
-	CSEBase& cse_;
+	CSEResourceStore& rdb_;
 	NSEBase& nse_;
 	CSEHandler& hdl_;
 };
+
+}	//OneM2M
+}	//MicroWireless
 
 #endif /* CSE_CSESERVER_H_ */

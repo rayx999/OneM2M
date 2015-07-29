@@ -30,9 +30,11 @@ class CSEBase {
 public:
 	CSEBase();
 	CSEBase(const char* fn);
-	bool setCSEBase(const char * fn = DEFAULT_CSEBASE_FN);
-	bool setCSEBase(stringstream &sbuf);
+	CSEBase(const string& json);
+	bool setCSEBase(const char * fn);
+	bool setCSEBase(const string &json);
 
+	const string &getDomain();
 	const string &getCSEId();
 	CSEType getCSEType();
 
@@ -53,7 +55,11 @@ protected:
 	bool setLastModifiedTimestamp(TimeStamp &lt);
 
 private:
+	bool checkIdConsistency();
+
+private:
 	pb::CSEBase cse_base_;
+	string domain_;
 };
 
 }	// OneM2M

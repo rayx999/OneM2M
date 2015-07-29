@@ -6,6 +6,7 @@
  */
 
 #include <stdexcept>
+#include <regex>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -37,6 +38,13 @@ CSEBase::CSEBase(const char * fn) {
 	}
 }
 
+CSEBase::CSEBase(const string& json) {
+	CSEBase();
+	if (!setCSEBase(json)) {
+		throw runtime_error("Set CSE Json failed.");
+	}
+}
+
 bool CSEBase::setCSEBase(const char * fn) {
 	bool _ret = false;
     fstream ins(fn, ios::in | ios::binary);
@@ -46,18 +54,17 @@ bool CSEBase::setCSEBase(const char * fn) {
     } else if (!cse_base_.ParseFromIstream(&ins)) {
         cerr << "Failed to parse resource file " << fn << endl;
     } else {
-    	_ret = true;
+    	_ret = checkIdConsistency();
     }
 
     return _ret;
 }
 
-bool CSEBase::setCSEBase(stringstream &sbuf) {
-	string bstr = sbuf.str();
+bool CSEBase::setCSEBase(const string &json) {
 	pb::CSEBase _cse_base;
 
 	// parse to PB buffer
-	json2pb(_cse_base, bstr.c_str(), bstr.length());
+	json2pb(_cse_base, json.c_str(), json.length());
 
 	// need to keep original create time if Json file
 	// doesn't have create time set up
@@ -71,6 +78,12 @@ bool CSEBase::setCSEBase(stringstream &sbuf) {
 	if (!_ct_set) {
 		setCreateTimestamp(_ct);
 	}
+
+	return checkIdConsistency();
+}
+
+const string& CSEBase::getDomain() {
+	return domain_;
 }
 
 const string& CSEBase::getCSEId() {
@@ -181,6 +194,33 @@ string CSEBase::getJson() {
   	return pb2json(cse_base_);
 }
 
+bool CSEBase::checkIdConsistency() {
+	static regex pattern_("(//[.\\w-]+)(/[\\w-]+)/([\\w-]+)");
+	smatch sm;
+	bool ret = false;
+
+	regex_match(getResourceId(), sm, pattern_);
+	switch (sm.size()) {
+	case 4:
+	case 3: if (getResourceName().compare(sm[3]) != 0) {
+				cerr << "Resource name conflicts." << getResourceName();
+				cerr << " vs. " << sm[3] << endl;
+				break;
+			}
+	case 2: if (getCSEId().compare(sm[2]) != 0) {
+				cerr << "CSEId conflicts." << getCSEId();
+				cerr << " vs. " << sm[2] << endl;
+				break;
+			}
+	case 1: domain_ = sm[1];
+			ret = true;
+			break;
+	default:
+		cerr << "regex match error on " << getResourceId() << endl;
+	}
+
+	return ret;
+}
 
 }	// OneM2M
 
