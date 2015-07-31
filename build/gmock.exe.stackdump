@@ -1,0 +1,7 @@
+Exception: STATUS_ACCESS_VIOLATION at eip=00456022
+eax=18EC8353 ebx=80016418 ecx=00000000 edx=18EC8353 esi=61230494 edi=8001632C
+ebp=80016330 esp=0028C8F0 program=C:\Workspace\Github\OneM2M\build\gmock.exe, pid 23112, thread main
+cs=0023 ds=002B es=002B fs=0053 gs=002B ss=002B
+Stack trace:
+Frame     Function  Args
+End of stack trace

@@ -6,10 +6,10 @@
  */
 
 #include <stdexcept>
-#include <regex>
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <boost/regex.hpp>
 #include <json2pb.h>
 
 #include "CommonTypes.pb.h"
@@ -195,11 +195,11 @@ string CSEBase::getJson() {
 }
 
 bool CSEBase::checkIdConsistency() {
-	static regex pattern_("(//[.\\w-]+)(/[\\w-]+)/([\\w-]+)");
-	smatch sm;
+	static boost::regex pattern_("(^//[\\.\\w-]+)(/[\\w-]+)(?:/([\\w-]+))?");
+	boost::smatch sm;
 	bool ret = false;
 
-	regex_match(getResourceId(), sm, pattern_);
+	boost::regex_match(getResourceId(), sm, pattern_);
 	switch (sm.size()) {
 	case 4:
 	case 3: if (getResourceName().compare(sm[3]) != 0) {

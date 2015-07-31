@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <sstream>
-#include <regex>
+#include <boost/regex.hpp>
 #include <json2pb.h>
 
 #include "Request.pb.h"
@@ -126,10 +126,10 @@ DiscoveryResultType getDiscoveryResultType();
 
 void Request::parseIdInfo() {
 	// to = //domain/cseid/resource, case insensitive
-	static regex pattern_("(//[.\\w-]+)(/[\\w-]+)/([\\w-]+)");
-	smatch sm;
+	static boost::regex pattern_("(^//[\\.\\w-]+)(/[\\w-]+)(?:/([\\w-]+))?");
+	boost::smatch sm;
 
-	regex_match(getTo(), sm, pattern_);
+	boost::regex_match(getTo(), sm, pattern_);
 	switch (sm.size()) {
 	case 4:
 	case 3: rn_ = sm[3];

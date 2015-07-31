@@ -21,7 +21,7 @@ MC_SRC    := $(foreach sdir,$(MC_DIR),$(wildcard $(sdir)/*.cc))
 MC_OBJ    := $(patsubst %.cc,build/%.o,$(MC_SRC))
 MC_FLG    := -Wall -D_WIN32_WINNT=0x0501 -D__USE_W32_SOCKETS -std=gnu++11
 MC_INC    := -Iinclude $(addprefix -I,$(MC_DIR))
-MC_LIB    := -lboost_iostreams -lboost_filesystem -lboost_system -L/usr/local/lib
+MC_LIB    := -lboost_regex -lboost_filesystem -lboost_system -L/usr/local/lib
 
 # Elements i.e. CSE, AE, etc.
 EL_DIR    := cse 

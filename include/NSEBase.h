@@ -34,7 +34,7 @@ public:
 
 private:
 	RequestHandler * request_handler_;
-	const std::string & ip_, port_;
+	const std::string ip_, port_;
 };
 
 }	// OneM2M

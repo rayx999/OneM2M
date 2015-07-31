@@ -69,6 +69,8 @@ const string NSEBaseMockTest::retrieve_json("{\"op\": 2, \"to\": \"//microwirele
 
 TEST_F(NSEBaseMockTest, RetrieveCSE) {
 
+	 std::cout << "EXPECT_CALL() starts.." << std::endl;
+
   EXPECT_CALL(*nse_, run()).Times(1);
 //	  .WillOnce(Invoke(this, &NSEBaseMockTest::handleRequest));
 
